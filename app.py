@@ -8,7 +8,7 @@ from youtube import Youtube
 WEATHER_API = "adea9ed55a37f7a427463f3cde699948"
 YOUTUBE_API = "AIzaSyDrte07cVXGrqHB_iawwowsU-Sv39JzHdE"
 df = pd.read_csv(
-    "\dataset\music_dataset.csv"
+    ".\dataset\music_dataset.csv"
 )
 app = Flask(__name__)
 try:
