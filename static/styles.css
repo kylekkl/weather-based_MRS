@@ -1,0 +1,104 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.header, .footer {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.header h1 {
+    margin: 0;
+    color: #1a1a1a;
+    font-size: 2em;
+}
+
+.city-form {
+    margin: 20px 0;
+}
+
+.input-field {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    width: calc(100% - 120px);
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+.youtube-display {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.youtube-display iframe {
+    max-width: 100%;
+    height: 400px; /* Adjust as needed */
+}
+
+.footer p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.reaction-buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.like-button, .dislike-button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1em;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    outline: none;
+}
+
+.like-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.dislike-button {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+.like-button:hover, .dislike-button:hover {
+    opacity: 0.8;
+}
+
+.like-button:active, .dislike-button:active {
+    transform: scale(0.95);
+}

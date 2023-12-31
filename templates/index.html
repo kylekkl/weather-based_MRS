@@ -1,0 +1,49 @@
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Recommendation System</title>
+    <link rel="stylesheet" href="static\styles.css">
+    <script type="text/javascript">
+        function validateForm() {
+            var cityInput = document.forms["cityForm"]["city"].value;
+            if (cityInput.trim() === "") {
+                alert("Please enter your current city.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Music Recommendation System</h1>
+        </header>
+
+        <main>
+            <section class="city-form">
+                <form name="cityForm" action="/" method="post" onsubmit="return validateForm()">
+                    <input type="text" name="city" placeholder="Enter your city" class="input-field">
+                    <button type="submit" class="submit-btn">Submit</button>
+                </form>
+            </section>
+
+            <div class="youtube-display">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ video_id }}" frameborder="0" allowfullscreen></iframe>
+            </div>
+            
+            <section class="reaction-buttons">
+                <button class="like-button">Like</button>
+                <button class="dislike-button">Dislike</button>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2023 Music Recommendation System</p>
+        </footer>
+    </div>
+</body>
+</html>
