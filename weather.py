@@ -76,6 +76,9 @@ class Weather:
     
     #*Determine mood by temperature and weather condition
     def get_mood(self,temperature, weather_condition):
+        if temperature is None or weather_condition is None:
+            print("Error: Weather data is incomplete.")
+            return None
         if (
         weather_condition in WEATHER_CONDITIONS["Clear"]
         or weather_condition in WEATHER_CONDITIONS["Clouds"]
@@ -101,3 +104,4 @@ class Weather:
         else:
             print("Error: Weather data is incomplete.")
             return None
+        

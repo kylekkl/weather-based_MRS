@@ -36,8 +36,10 @@
             </div>
             
             <section class="reaction-buttons">
-                <button class="like-button">Like</button>
-                <button class="dislike-button">Dislike</button>
+                <form action="/" method="post">
+                    <button type="submit" name="reaction" value="like" class="like-button">Like</button>
+                    <button type="submit" name="reaction" value="dislike" class="dislike-button">Dislike</button>
+                </form>
             </section>
         </main>
 
