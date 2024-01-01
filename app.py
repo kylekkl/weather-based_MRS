@@ -44,8 +44,8 @@ def handle_city_input():
     temperature, weather_condition = weather.get_weather()
     mood = weather.get_mood(temperature, weather_condition)
     USER_SESSION = {"location": location, "mood": mood, "songs": []}
-    insert_result = collection.insert_one(USER_SESSION)
-    USER_SESSION["_id"] = insert_result.inserted_id
+    # insert_result = collection.insert_one(USER_SESSION)
+    # USER_SESSION["_id"] = insert_result.inserted_id
     if mood is None:
         return render_template(
             "index.html", warning="Unable to determine mood from weather data."
@@ -68,7 +68,7 @@ def handle_reaction():
     if "reaction" in request.form:
         rating = request.form.get("reaction")
         TEMP_SONG["rating"] = rating
-        update_user_session(TEMP_SONG)
+        # update_user_session(TEMP_SONG)
     if SONG_LIST is not None and not SONG_LIST.empty:
         video_id = get_song_video_id()
         return render_template("index.html", video_id=video_id)
