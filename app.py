@@ -16,7 +16,7 @@ TEMP_SONG = {}
 app = Flask(__name__)
 
 # Dataset
-df = pd.read_csv("./dataset/music_dataset.csv")
+df = pd.read_csv("./dataset/music_dataset_with_genres.csv")
 
 # Database
 client = MongoClient(MONGODB_URL)
