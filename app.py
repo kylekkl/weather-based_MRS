@@ -81,7 +81,7 @@ def get_song_video_id():
         random_row = SONG_LIST.sample()
         artist = random_row["artist"].to_string(index=False)
         song = random_row["name"].to_string(index=False)
-        music_genre = random_row["Genre"].to_string(index=False)
+        music_genre = random_row["genre"].to_string(index=False)
         search_item = f"{artist} - {song}"
         TEMP_SONG = {
             "nameOfSong": song,
