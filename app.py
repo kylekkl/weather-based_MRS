@@ -32,10 +32,10 @@ app = Flask(__name__)
 # Read the entire content
 pd.set_option("display.max_colwidth", None)
 # Dataset for Weather-Based Recommendations
-df = pd.read_csv(".\\dataset\\music_dataset_with_genres.csv")
+df = pd.read_csv("./dataset/music_dataset_with_genres.csv")
 
 # Dataset for Genre-Based Recommendations
-genre_based_df = pd.read_csv(".\\dataset\\data_with_genres.csv")
+genre_based_df = pd.read_csv("./dataset/data_with_genres.csv")
 
 # Database Initialization
 client = MongoClient(MONGODB_URL)
