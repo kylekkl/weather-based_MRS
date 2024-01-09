@@ -32,15 +32,15 @@ app = Flask(__name__)
 # Read the entire content
 pd.set_option("display.max_colwidth", None)
 # Dataset for Weather-Based Recommendations
-df = pd.read_csv("./dataset/music_dataset_with_genres.csv")
+df = pd.read_csv(".\\dataset\\music_dataset_with_genres.csv")
 
 # Dataset for Genre-Based Recommendations
-genre_based_df = pd.read_csv("./dataset/data_with_genres.csv")
+genre_based_df = pd.read_csv(".\\dataset\\data_with_genres.csv")
 
 # Database Initialization
 client = MongoClient(MONGODB_URL)
 db = client.project_a
-collection = db.music_recommendation_system
+collection = db.weather_based_MRS
 
 # TFIDF Vectorizer for Genre-Based Recommendations
 genre_based_df["genre_combined"] = genre_based_df["genre"].apply(
@@ -82,7 +82,7 @@ def handle_city_input():
         "amount_of_like": 0,
     }
     collection.insert_one(USER_SESSION)
-
+    print(location, mood, weather_condition, temperature)
     if mood:
         SONG_LIST = df[
             df["mood"] == mood
@@ -160,8 +160,6 @@ def get_song_video_id():
 
 
 """Update Database"""
-
-
 def update_user_session(song_info):
     global USER_SESSION
     collection.update_one({"_id": USER_SESSION["_id"]}, {"$push": {"songs": song_info}})
