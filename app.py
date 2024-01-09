@@ -10,7 +10,7 @@ from youtube import Youtube
 
 # Constants and Global Variables
 WEATHER_API = "adea9ed55a37f7a427463f3cde699948"
-YOUTUBE_API = "AIzaSyDzWCrerZ-eMXbuqhTldKNgsiyaDUAcEW4"
+YOUTUBE_API = "AIzaSyDrte07cVXGrqHB_iawwowsU-Sv39JzHdE"
 MONGODB_URL = "mongodb+srv://kylekakili:kBdqAZk5IaYPiyPO@cluster0.b7zpfgx.mongodb.net/"
 USER_SESSION = {
     "location": "",
@@ -28,10 +28,10 @@ app = Flask(__name__)
 # Read the entire content
 pd.set_option("display.max_colwidth", None)
 # Dataset for Weather-Based Recommendations
-df = pd.read_csv(".\\dataset\\music_dataset_with_genres.csv")
+df = pd.read_csv("./dataset/music_dataset_with_genres.csv")
 
 # Dataset for Genre-Based Recommendations
-genre_based_df = pd.read_csv(".\\dataset\\data_with_genres.csv")
+genre_based_df = pd.read_csv("./dataset/data_with_genres.csv")
 
 # Database Initialization
 client = MongoClient(MONGODB_URL)
