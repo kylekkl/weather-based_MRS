@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Recommendation System</title>
+    <title>Weather Music Recommendation System</title>
     <link rel="stylesheet" href="static/styles.css">
     <script type="text/javascript">
         function validateForm() {
@@ -20,19 +20,23 @@
 <body>
     <div class="container">
         <header class="header">
-            <h1>Music Recommendation System</h1>
+            <h1>Weather Music Recommendation System</h1>
         </header>
 
         <main>
+            {% if not video_id %}
             <section class="city-form">
                 <form name="cityForm" action="/" method="post" onsubmit="return validateForm()">
                     <input type="text" name="city" placeholder="Enter your city" class="input-field">
                     <button type="submit" class="submit-btn">Submit</button>
                 </form>
             </section>
+            {% endif %}
 
+            <!-- YouTube display section -->
+            {% if video_id %}
             <div class="youtube-display">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ video_id }}" frameborder="0" allowfullscreen></iframe>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ video_id }}" frameborder="0" allowfullscreen></iframe>
             </div>
             
             <section class="reaction-buttons">
@@ -41,6 +45,7 @@
                     <button type="submit" name="reaction" value="dislike" class="dislike-button">Dislike</button>
                 </form>
             </section>
+            {% endif %}
         </main>
 
         <footer class="footer">
