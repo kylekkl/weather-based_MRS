@@ -11,6 +11,9 @@ from youtube import Youtube
 # Constants and Global Variables
 WEATHER_API = "adea9ed55a37f7a427463f3cde699948"
 YOUTUBE_API = "AIzaSyDrte07cVXGrqHB_iawwowsU-Sv39JzHdE"
+#AIzaSyDrte07cVXGrqHB_iawwowsU-Sv39JzHdE
+#AIzaSyDzWCrerZ-eMXbuqhTldKNgsiyaDUAcEW4
+#AIzaSyBlGzM3gF5929_bH4lCrG88sTn42kN4OrQ
 MONGODB_URL = "mongodb+srv://kylekakili:kBdqAZk5IaYPiyPO@cluster0.b7zpfgx.mongodb.net/"
 USER_SESSION = {
     "location": "",
@@ -18,6 +21,7 @@ USER_SESSION = {
     "songs": [],
     "amount_of_like": 0,
     "recommended_songs": set(),
+    
 }
 TEMP_SONG = {}
 
@@ -28,10 +32,10 @@ app = Flask(__name__)
 # Read the entire content
 pd.set_option("display.max_colwidth", None)
 # Dataset for Weather-Based Recommendations
-df = pd.read_csv("./dataset/music_dataset_with_genres.csv")
+df = pd.read_csv(".\\dataset\\music_dataset_with_genres.csv")
 
 # Dataset for Genre-Based Recommendations
-genre_based_df = pd.read_csv("./dataset/data_with_genres.csv")
+genre_based_df = pd.read_csv(".\\dataset\\data_with_genres.csv")
 
 # Database Initialization
 client = MongoClient(MONGODB_URL)
@@ -121,8 +125,10 @@ def handle_reaction():
 recommended = []
 
 
+last_recommended_artist = None
+
 def get_song_video_id():
-    global SONG_LIST, TEMP_SONG
+    global SONG_LIST, TEMP_SONG, last_recommended_artist
     if SONG_LIST is not None and not SONG_LIST.empty:
         while True:
             random_row = SONG_LIST.sample()  # Get a random row of the song list
@@ -131,11 +137,16 @@ def get_song_video_id():
                 random_row["artist"].iloc[0],
             )  # Unique identifier for the song
 
-            if song_identifier not in recommended:
+            current_artist = random_row["artist"].iloc[0]
+
+            # Check if the current artist is the same as the last recommended artist
+            if current_artist != last_recommended_artist and song_identifier not in recommended:
                 recommended.append(song_identifier)
+                last_recommended_artist = current_artist  # Update the last recommended artist
+
                 TEMP_SONG = {
                     "nameOfSong": random_row["name"].to_string(index=False),
-                    "artist": random_row["artist"].to_string(index=False),
+                    "artist": current_artist,
                     "musicGenre": random_row["genre"].to_string(index=False),
                 }
                 search_query = f"{TEMP_SONG['artist']} - {TEMP_SONG['nameOfSong']}"
@@ -145,6 +156,7 @@ def get_song_video_id():
             if len(recommended) >= len(SONG_LIST):
                 # All songs have been recommended, handle this case
                 return None
+
 
 
 """Update Database"""
@@ -179,14 +191,14 @@ def recommend_based_on_genre():
         if recommended_song["name"] not in previously_recommended_songs:
             SONG_LIST = recommended_song.to_frame().T
             video_id = get_song_video_id()
-            return render_template("index.html", video_id=video_id)
-        else:
-            print(f"Skipping already recommended song: {recommended_song['name']}")
+            if video_id is not None:
+                return render_template("index.html", video_id=video_id)
 
-    print("No new songs found based on preferences.")
+    # If no new songs are found
     return render_template(
         "index.html", warning="No new songs found based on your preferences."
     )
+
 
 
 if __name__ == "__main__":
