@@ -9,8 +9,8 @@ from weather import Weather
 from youtube import Youtube
 
 # Constants and Global Variables
-WEATHER_API = "adea9ed55a37f7a427463f3cde699948"
-YOUTUBE_API = "AIzaSyDzWCrerZ-eMXbuqhTldKNgsiyaDUAcEW4"
+WEATHER_API = "38d2f4b13545a124018e68eab8c22a58"
+YOUTUBE_API = "AIzaSyBlGzM3gF5929_bH4lCrG88sTn42kN4OrQ"
 MONGODB_URL = "mongodb+srv://kylekakili:kBdqAZk5IaYPiyPO@cluster0.b7zpfgx.mongodb.net/"
 
 # AIzaSyDrte07cVXGrqHB_iawwowsU-Sv39JzHdE
@@ -26,11 +26,9 @@ app = Flask(__name__)
 
 # Read the entire content
 pd.set_option("display.max_colwidth", None)
-# Dataset for Weather-Based Recommendations
-df = pd.read_csv("./dataset/music_dataset_with_genres.csv")
+# Dataset
+df = pd.read_csv("updated_dataset.csv", encoding="latin1")
 
-# Dataset for Genre-Based Recommendations
-genre_based_df = pd.read_csv("./dataset/data_with_genres.csv")
 
 # Database Initialization
 client = MongoClient(MONGODB_URL)
@@ -38,11 +36,9 @@ db = client.project_a
 collection = db.weather_based_MRS
 
 # TFIDF Vectorizer for Genre-Based Recommendations
-genre_based_df["genre_combined"] = genre_based_df["genre"].apply(
-    lambda x: " ".join(x.split(", "))
-)
+df["genre_combined"] = df["genre"].apply(lambda x: " ".join(x.split(", ")))
 tfidf_vectorizer = TfidfVectorizer()
-tfidf_matrix = tfidf_vectorizer.fit_transform(genre_based_df["genre_combined"])
+tfidf_matrix = tfidf_vectorizer.fit_transform(df["genre_combined"])
 
 
 # Route Definitions
@@ -53,7 +49,9 @@ def index():
             return handle_city_input()
         if "reaction" in request.form:
             return handle_reaction()
-    return render_template("index.html", songs_listened=USER_SESSION.get('songs_listened', 0))
+    return render_template(
+        "index.html", amount_of_like=USER_SESSION.get("amount_of_like")
+    )
 
 
 def handle_city_input():
@@ -81,7 +79,11 @@ def handle_city_input():
             df["mood"] == mood
         ]  # Save the song if the mood column is equal to the mood that presented
         video_id = get_song_video_id()
-        return render_template("index.html", video_id=video_id, songs_listened=USER_SESSION.get('songs_listened', 0))
+        return render_template(
+            "index.html",
+            video_id=video_id,
+            songs_listened=USER_SESSION.get("songs_listened", 0),
+        )
     else:
         return render_template(
             "index.html", warning="Unable to determine mood from weather data."
@@ -95,7 +97,7 @@ def handle_reaction():
     )  # Set to default 'Not Rated' if reaction is not found, if user press like, rating = 'like'
     TEMP_SONG["rating"] = rating  # Adding key and values of rating
     update_user_session(TEMP_SONG)
-    USER_SESSION['songs_listened'] = USER_SESSION.get('songs_listened',0) + 1
+    USER_SESSION["songs_listened"] = USER_SESSION.get("songs_listened", 0) + 1
     if TEMP_SONG["rating"] == "like":
         USER_SESSION["amount_of_like"] += 1
         collection.update_one(
@@ -112,7 +114,7 @@ def handle_reaction():
         liked_songs_df["genre_combined"] = liked_songs_df["musicGenre"].apply(
             lambda x: " ".join(x.split(", "))
         )
-        recommendations = generate_playlist_recos(genre_based_df, liked_songs_df)
+        recommendations = generate_playlist_recos(df, liked_songs_df)
         if not recommendations.empty:
             for _, top_song in recommendations.iterrows():
                 song_identifier = (top_song["name"], top_song["artist"])
@@ -134,9 +136,18 @@ def handle_reaction():
                     yt = Youtube(api_key=YOUTUBE_API, search_query=search_query)
                     video_id = yt.get_result()
                     if video_id:
-                        return render_template("index.html", video_id=video_id, songs_listened=USER_SESSION.get('songs_listened', 0))
+                        return render_template(
+                            "index.html",
+                            video_id=video_id,
+                            songs_listened=USER_SESSION.get("songs_listened", 0),
+                        )
                     break
-    return render_template("index.html", video_id=get_song_video_id(),songs_listened=USER_SESSION.get('songs_listened', 0))
+    return render_template(
+        "index.html",
+        video_id=get_song_video_id(),
+        songs_listened=USER_SESSION.get("songs_listened", 0),
+        amount_of_like=USER_SESSION.get("amount_of_like", 0),
+    )
 
 
 def get_song_video_id():
