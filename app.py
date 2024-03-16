@@ -32,7 +32,7 @@ df = pd.read_csv("updated_dataset.csv", encoding="latin1")
 
 # Database Initialization
 client = MongoClient(MONGODB_URL)
-db = client.project_a
+db = client.project_b
 collection = db.weather_based_MRS
 
 # TFIDF Vectorizer for Genre-Based Recommendations
