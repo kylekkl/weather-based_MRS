@@ -50,7 +50,7 @@ def index():
         if "reaction" in request.form:
             return handle_reaction()
     return render_template(
-        "index.html", amount_of_like=USER_SESSION.get("amount_of_like")
+        "index.html"
     )
 
 
@@ -83,6 +83,7 @@ def handle_city_input():
             "index.html",
             video_id=video_id,
             songs_listened=USER_SESSION.get("songs_listened", 0),
+            amount_of_like=USER_SESSION.get("amount_of_like",0)
         )
     else:
         return render_template(
@@ -140,6 +141,7 @@ def handle_reaction():
                             "index.html",
                             video_id=video_id,
                             songs_listened=USER_SESSION.get("songs_listened", 0),
+                            amount_of_like=USER_SESSION.get("amount_of_like",0)
                         )
                     break
     return render_template(
