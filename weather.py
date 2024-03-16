@@ -1,4 +1,5 @@
 import requests
+
 WEATHER_CONDITIONS = {
     "Thunderstorm": [
         "thunderstorm with light rain",
@@ -53,17 +54,19 @@ WEATHER_CONDITIONS = {
     "Clouds": ["few clouds", "scattered clouds", "broken clouds", "overcast clouds"],
 }
 URL = "http://api.openweathermap.org/data/2.5/weather"
+
+
 class Weather:
-    def __init__(self,api_key,city):
+    def __init__(self, api_key, city):
         self.api_key = api_key
         self.city = city
-    
-    #* get the data from OpenWeather
+
+    # * get the data from OpenWeather
     def get_weather(self):
         params = {
-        "q": self.city,
-        "appid": self.api_key,
-        "units": "metric",  #* To get temperature in Celsius
+            "q": self.city,
+            "appid": self.api_key,
+            "units": "metric",  # * To get temperature in Celsius
         }
         response = requests.get(URL, params=params)
         if response.status_code == 200:
@@ -72,28 +75,27 @@ class Weather:
             weather_condition = data["weather"][0]["description"]
             return temperature, weather_condition
         else:
-            return None, None 
-    
-    #*Determine mood by temperature and weather condition
-    def get_mood(self,temperature, weather_condition):
+            return None, None
+
+    # *Determine mood by temperature and weather condition
+    def get_mood(self, temperature, weather_condition):
         if temperature is None or weather_condition is None:
             print("Error: Weather data is incomplete.")
             return None
         if (
-        weather_condition in WEATHER_CONDITIONS["Clear"]
-        or weather_condition in WEATHER_CONDITIONS["Clouds"]
-    ) and (temperature >= 21 and temperature <= 32):
+            weather_condition in WEATHER_CONDITIONS["Clear"]
+            or weather_condition in WEATHER_CONDITIONS["Clouds"]
+        ) and (temperature >= 21 and temperature <= 32):
             return "Happy"
         elif weather_condition in WEATHER_CONDITIONS["Clouds"] and temperature < 21:
             return "Calm"
-        elif weather_condition in WEATHER_CONDITIONS["Clear"] and temperature < 21:
-            return "Energetic"
+        elif temperature >= 32:
+            return "Angry"
         elif (
             weather_condition in WEATHER_CONDITIONS["Rain"]
             or weather_condition in WEATHER_CONDITIONS["Thunderstorm"]
             or weather_condition in WEATHER_CONDITIONS["Snow"]
-            or temperature > 32
-        ):
+        ) and temperature <= 32:
             return "Sad"
         elif (
             weather_condition in WEATHER_CONDITIONS["Drizzle"]
@@ -102,6 +104,4 @@ class Weather:
         ):
             return "Calm"
         else:
-            print("Error: Weather data is incomplete.")
-            return None
-        
+            raise ValueError("Error: Weather data is incomplete.")
