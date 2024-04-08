@@ -10,7 +10,7 @@ from youtube import Youtube
 
 # Constants and Global Variables
 WEATHER_API = "38d2f4b13545a124018e68eab8c22a58"
-YOUTUBE_API = "AIzaSyBlGzM3gF5929_bH4lCrG88sTn42kN4OrQ"
+YOUTUBE_API = "AIzaSyDzWCrerZ-eMXbuqhTldKNgsiyaDUAcEW4"
 MONGODB_URL = "mongodb+srv://kylekakili:kBdqAZk5IaYPiyPO@cluster0.b7zpfgx.mongodb.net/"
 
 # AIzaSyDrte07cVXGrqHB_iawwowsU-Sv39JzHdE
